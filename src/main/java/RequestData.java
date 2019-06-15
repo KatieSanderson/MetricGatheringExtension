@@ -1,7 +1,7 @@
 import java.util.Date;
 
 /**
- * {@link RequestData} stores the start and end {@link Date} for a request. {@link RequestData #getRequestTime} calculates the request time.
+ * {@link RequestData} stores the start and end {@link Date} for an in-process request. {@link RequestData #getRequestTime} calculates the request time.
  *
  * startRequestProcess: the time when the application starts to process the request
  * endRequestProcess: the time when the application sends the response to the client
@@ -12,13 +12,22 @@ class RequestData {
 
     private Date startRequestProcess;
     private Date endRequestProcess;
+    private int requestSize;
 
-    void setStartRequestProcess(long startRequestProcess) {
+    public void setStartRequestProcess(long startRequestProcess) {
         this.startRequestProcess = new Date(startRequestProcess);
     }
 
-    void setEndRequestProcess(long endRequestProcess) {
+    public void setEndRequestProcess(long endRequestProcess) {
         this.endRequestProcess = new Date(endRequestProcess);
+    }
+
+    public int getRequestSize() {
+        return requestSize;
+    }
+
+    public void setRequestSize(int requestSize) {
+        this.requestSize = requestSize;
     }
 
     /**

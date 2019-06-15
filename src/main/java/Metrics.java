@@ -2,7 +2,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * {@link Metrics} stores metrics about requests and responses served by the application. Times are provided in milliseconds. Sizes are provided in bytes. Averages are integers.
+ * {@link Metrics} stores historical and performance metrics about requests and responses served by the application.
+ * Times are provided in milliseconds. Sizes are provided in bytes.
  *
  * METRICS GATHERED
  * 1. Request time (milliseconds) - time spent between when the application starts to process the request and the time when the application sends the response to the client
@@ -20,12 +21,10 @@ public class Metrics {
 
     private int maximumRequestTime;
     private int minimumRequestTime;
-    private int averageRequestTime;
-
+    private double averageRequestTime;
     private int maximumRequestSize;
     private int minimumRequestSize;
-    private int averageRequestSize;
-
+    private double averageRequestSize;
     private int count;
 
     Metrics() {
@@ -63,7 +62,7 @@ public class Metrics {
         return minimumRequestTime;
     }
 
-    public int getAverageRequestTime() {
+    public double getAverageRequestTime() {
         return averageRequestTime;
     }
 
@@ -75,7 +74,7 @@ public class Metrics {
         return minimumRequestSize;
     }
 
-    public int getAverageRequestSize() {
+    public double getAverageRequestSize() {
         return averageRequestSize;
     }
 

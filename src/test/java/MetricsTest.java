@@ -23,7 +23,7 @@ public class MetricsTest {
         metrics.addRequestMetrics(0, 0);
         metrics.addRequestMetrics(1, 0);
 
-        testMetrics(1, 0, 0, 0, 0, 0);
+        testMetrics(1, 0, 0.5, 0, 0, 0);
     }
 
     @Test
@@ -31,7 +31,7 @@ public class MetricsTest {
         metrics.addRequestMetrics(1, 0);
         metrics.addRequestMetrics(0, 0);
 
-        testMetrics(1, 0, 0, 0, 0, 0);
+        testMetrics(1, 0, 0.5, 0, 0, 0);
     }
 
     @Test
@@ -47,7 +47,7 @@ public class MetricsTest {
         metrics.addRequestMetrics(0, 0);
         metrics.addRequestMetrics(0, 1);
 
-        testMetrics(0, 0, 0, 1, 0, 0);
+        testMetrics(0, 0, 0, 1, 0, 0.5);
     }
 
     @Test
@@ -55,7 +55,7 @@ public class MetricsTest {
         metrics.addRequestMetrics(0, 1);
         metrics.addRequestMetrics(0, 0);
 
-        testMetrics(0, 0, 0, 1, 0, 0);
+        testMetrics(0, 0, 0, 1, 0, 0.5);
     }
 
     @Test
@@ -80,13 +80,13 @@ public class MetricsTest {
         Assert.assertEquals(2, (int) metrics.getRequestSizeById().get(1));
     }
 
-    private void testMetrics(int expectedMaximumRequestTime, int expectedMinimumRequestTime, int expectedAverageRequestTime,
-                             int expectedMaximumRequestSize, int expectedMinimumRequestSize, int expectedAverageRequestSize) {
+    private void testMetrics(int expectedMaximumRequestTime, int expectedMinimumRequestTime, double expectedAverageRequestTime,
+                             int expectedMaximumRequestSize, int expectedMinimumRequestSize, double expectedAverageRequestSize) {
         Assert.assertEquals(expectedMaximumRequestTime, metrics.getMaximumRequestTime());
         Assert.assertEquals(expectedMinimumRequestTime, metrics.getMinimumRequestTime());
-        Assert.assertEquals(expectedAverageRequestTime, metrics.getAverageRequestTime());
+        Assert.assertEquals(expectedAverageRequestTime, metrics.getAverageRequestTime(), 0.01);
         Assert.assertEquals(expectedMaximumRequestSize, metrics.getMaximumRequestSize());
         Assert.assertEquals(expectedMinimumRequestSize, metrics.getMinimumRequestSize());
-        Assert.assertEquals(expectedAverageRequestSize, metrics.getAverageRequestSize());
+        Assert.assertEquals(expectedAverageRequestSize, metrics.getAverageRequestSize(), 0.01);
     }
 }
