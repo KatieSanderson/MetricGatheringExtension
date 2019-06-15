@@ -18,7 +18,7 @@ public class MetricGatheringExtension implements AutoCloseable {
 
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
-        String file = "C:\\Users\\Katie\\Dev\\MetricGatheringExtension\\src\\main\\resources\\tempFile";
+        String file = "src\\main\\resources\\tempFile";
         BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(file)));
         try (MetricGatheringExtension mge = new MetricGatheringExtension(scanner, bufferedReader)) {
             Metrics historicalMetrics = new Metrics();
@@ -31,24 +31,16 @@ public class MetricGatheringExtension implements AutoCloseable {
                 System.out.println("Setting start time to: " + System.currentTimeMillis());
                 processRequestData.setStartRequestProcess(System.currentTimeMillis());
                 URLConnection urlConnection = url.openConnection();
-                System.out.println("Content length: " + urlConnection.getContentLength());
-                processRequestData.setRequestSize(urlConnection.getContentLength());
+                System.out.println("Content length: " + urlConnection.getContentLengthLong());
+                processRequestData.setRequestSize(urlConnection.getContentLengthLong());
                 System.out.println("Setting end time to: " + System.currentTimeMillis());
                 processRequestData.setEndRequestProcess(System.currentTimeMillis());
 
-                mge.addRequestToMetrics(historicalMetrics, 0, processRequestData);
+                historicalMetrics.addRequestMetrics(processRequestData);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void addRequestToMetrics(Metrics historicalMetrics, int id, RequestData request) {
-        int requestTime = request.getRequestTime();
-        int requestSize = request.getRequestSize();
-        historicalMetrics.getRequestTimeById().put(id, requestTime);
-        historicalMetrics.getRequestSizeById().put(id, requestSize);
-        historicalMetrics.addRequestMetrics(requestTime, requestSize);
     }
 
     @Override

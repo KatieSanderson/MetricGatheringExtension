@@ -16,25 +16,28 @@ import java.util.Map;
 
 public class Metrics {
 
-    private final Map<Integer, Integer> requestTimeById;
-    private final Map<Integer, Integer> requestSizeById;
+    private final Map<Integer, RequestData> requestById;
+    private int count;
 
     private int maximumRequestTime;
     private int minimumRequestTime;
     private double averageRequestTime;
-    private int maximumRequestSize;
-    private int minimumRequestSize;
+
+    private long maximumRequestSize;
+    private long minimumRequestSize;
     private double averageRequestSize;
-    private int count;
 
     Metrics() {
-        requestTimeById = new HashMap<>();
-        requestSizeById = new HashMap<>();
+        requestById = new HashMap<>();
         minimumRequestTime = Integer.MAX_VALUE;
         minimumRequestSize = Integer.MAX_VALUE;
     }
 
-    void addRequestMetrics(int requestTime, int requestSize) {
+    void addRequestMetrics(RequestData requestData) {
+        requestById.put(requestData.getRequestId(), requestData);
+        int requestTime = requestData.getRequestTime();
+        long requestSize = requestData.getRequestSize();
+
         maximumRequestTime = Math.max(maximumRequestTime, requestTime);
         minimumRequestTime = Math.min(minimumRequestTime, requestTime);
         averageRequestTime = (averageRequestTime * count + requestTime) / (count + 1);
@@ -46,13 +49,13 @@ public class Metrics {
         count++;
     }
 
-    Map<Integer, Integer> getRequestTimeById() {
-        return requestTimeById;
+    Map<Integer, RequestData> getRequestById() {
+        return requestById;
     }
 
-    Map<Integer, Integer> getRequestSizeById() {
-        return requestSizeById;
-    }
+//    Map<Integer, Integer> getRequestSizeById() {
+//        return requestSizeById;
+//    }
 
     public int getMaximumRequestTime() {
         return maximumRequestTime;
@@ -66,11 +69,11 @@ public class Metrics {
         return averageRequestTime;
     }
 
-    public int getMaximumRequestSize() {
+    public long getMaximumRequestSize() {
         return maximumRequestSize;
     }
 
-    public int getMinimumRequestSize() {
+    public long getMinimumRequestSize() {
         return minimumRequestSize;
     }
 

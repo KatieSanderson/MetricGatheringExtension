@@ -12,23 +12,8 @@ class RequestData {
 
     private Date startRequestProcess;
     private Date endRequestProcess;
-    private int requestSize;
-
-    public void setStartRequestProcess(long startRequestProcess) {
-        this.startRequestProcess = new Date(startRequestProcess);
-    }
-
-    public void setEndRequestProcess(long endRequestProcess) {
-        this.endRequestProcess = new Date(endRequestProcess);
-    }
-
-    public int getRequestSize() {
-        return requestSize;
-    }
-
-    public void setRequestSize(int requestSize) {
-        this.requestSize = requestSize;
-    }
+    private long requestSize;
+    private int requestId;
 
     /**
      * {@link RequestData #getRequestTime} returns the request time in int. This is acceptable as it is highly unlikely for request time to require beyond int's storage capacity.
@@ -52,4 +37,29 @@ class RequestData {
             throw new NullPointerException("Cannot calculate requestTime due to [" + null + "]. " + startEndExceptionString);
         }
     }
+
+    public void setStartRequestProcess(long startRequestProcess) {
+        this.startRequestProcess = new Date(startRequestProcess);
+    }
+
+    public void setEndRequestProcess(long endRequestProcess) {
+        this.endRequestProcess = new Date(endRequestProcess);
+    }
+
+    public long getRequestSize() {
+        return requestSize;
+    }
+
+    public void setRequestSize(long requestSize) {
+        this.requestSize = requestSize;
+    }
+
+    public int getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
+    }
+
 }
