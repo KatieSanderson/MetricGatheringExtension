@@ -33,66 +33,46 @@ public class MetricsTest {
 
     @Test
     public void addRequestMetrics_NewMaximumRequestTime() {
-        mockRequestData(0, 1, 0, 0);
+        callMockedRequest(0, 1, 0, 0);
 
-        metrics.addRequestMetrics(requestData);
-        metrics.addRequestMetrics(requestData);
 
         testMetrics(1, 0, 0.5, 0, 0, 0);
     }
 
     @Test
     public void addRequestMetrics_NewMinimumRequestTime() {
-        mockRequestData(1, 0, 0, 0);
-
-        metrics.addRequestMetrics(requestData);
-        metrics.addRequestMetrics(requestData);
+        callMockedRequest(1, 0, 0, 0);
 
         testMetrics(1, 0, 0.5, 0, 0, 0);
     }
 
     @Test
     public void addRequestMetrics_NewAverageRequestTime() {
-        mockRequestData(1, 1, 0, 0);
-
-        metrics.addRequestMetrics(requestData);
-        metrics.addRequestMetrics(requestData);
+        callMockedRequest(1, 1, 0, 0);
 
         testMetrics(1, 1, 1, 0, 0, 0);
     }
 
     @Test
     public void addRequestMetrics_NewMaximumRequestSize() {
-        mockRequestData(0, 0, 0, 1);
-
-        metrics.addRequestMetrics(requestData);
-        metrics.addRequestMetrics(requestData);
-//        metrics.addRequestMetrics(0, 0);
-//        metrics.addRequestMetrics(0, 1);
+        callMockedRequest(0, 0, 0, 1);
 
         testMetrics(0, 0, 0, 1, 0, 0.5);
     }
 
     @Test
     public void addRequestMetrics_NewMinimumRequestSize() {
-        mockRequestData(0, 0, 1, 0);
-
-        metrics.addRequestMetrics(requestData);
-        metrics.addRequestMetrics(requestData);
-//        metrics.addRequestMetrics(0, 1);
-//        metrics.addRequestMetrics(0, 0);
+        callMockedRequest(0, 0, 1, 0);
 
         testMetrics(0, 0, 0, 1, 0, 0.5);
     }
 
-//    @Test
-//    public void addRequestMetrics_NewAverageRequestSize() {
-//        mockRequestData(0, 0, 1, 1);
-////        metrics.addRequestMetrics(0, 1);
-////        metrics.addRequestMetrics(0, 1);
-//
-//        testMetrics(0, 0, 0, 1, 1, 1);
-//    }
+    @Test
+    public void addRequestMetrics_NewAverageRequestSize() {
+        callMockedRequest(0, 0, 1, 1);
+
+        testMetrics(0, 0, 0, 1, 1, 1);
+    }
 //
 //    @Test
 //    public void getRequestTimeById_Contains() {
@@ -108,9 +88,12 @@ public class MetricsTest {
 //        Assert.assertEquals(2, (int) metrics.getRequestSizeById().get(1));
 //    }
 
-    private void mockRequestData(int firstTime, int secondTime, long firstSize, long secondSize) {
+    private void callMockedRequest(int firstTime, int secondTime, long firstSize, long secondSize) {
         when(requestData.getRequestTime()).thenReturn(firstTime).thenReturn(secondTime);
         when(requestData.getRequestSize()).thenReturn(firstSize).thenReturn(secondSize);
+
+        metrics.addRequestMetrics(requestData);
+        metrics.addRequestMetrics(requestData);
     }
 
     private void testMetrics(int expectedMaximumRequestTime, int expectedMinimumRequestTime, double expectedAverageRequestTime,
