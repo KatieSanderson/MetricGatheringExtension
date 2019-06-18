@@ -1,6 +1,6 @@
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.io.*;
 import java.util.Random;
 
 public class MetricFilter implements javax.servlet.Filter {
@@ -24,6 +24,33 @@ public class MetricFilter implements javax.servlet.Filter {
         System.out.println("ID: " + processRequestData.getRequestId());
         System.out.println("Size: " + processRequestData.getRequestSize());
         System.out.println("Time: " + processRequestData.getRequestTime());
+
+
+        String file = "metrics.txt";
+        FileInputStream fileInputStream = null;
+        Metrics metrics = new Metrics();
+        try {
+            fileInputStream = new FileInputStream(file);
+            System.out.println("Found file");
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            try {
+                metrics = (Metrics) objectInputStream.readObject();
+                System.out.println("Found metrics");
+            } catch (ClassNotFoundException e) {
+                System.out.println(e.getLocalizedMessage() + "Error reading [" + file + "].");
+            }
+            objectInputStream.close();
+        } catch (FileNotFoundException e) {
+            System.out.println( e.getLocalizedMessage() + "File: [" + file + "]. Will create new file to store metrics. ");
+        }
+
+        metrics.addRequestMetrics(processRequestData);
+
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+        objectOutputStream.writeObject(metrics);
+        objectOutputStream.flush();
+        objectOutputStream.close();
     }
 
     @Override
