@@ -39,27 +39,27 @@ class RequestData implements Serializable {
         }
     }
 
-    public void setStartRequestProcess(long startRequestProcess) {
+    void setStartRequestProcess(long startRequestProcess) {
         this.startRequestProcess = new Date(startRequestProcess);
     }
 
-    public void setEndRequestProcess(long endRequestProcess) {
+    void setEndRequestProcess(long endRequestProcess) {
         this.endRequestProcess = new Date(endRequestProcess);
     }
 
-    public long getRequestSize() {
+    long getRequestSize() {
         return requestSize;
     }
 
-    public void setRequestSize(long requestSize) {
+    void setRequestSize(long requestSize) {
         this.requestSize = requestSize;
     }
 
-    public int getRequestId() {
+    int getRequestId() {
         return requestId;
     }
 
-    public void setRequestId(int requestId) {
+    void setRequestId(int requestId) {
         this.requestId = requestId;
     }
 

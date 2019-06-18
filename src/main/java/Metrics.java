@@ -15,7 +15,7 @@ import java.util.Map;
  *     b. Historical request size by unique identifier (HTTP header)
  */
 
-public class Metrics implements Serializable {
+class Metrics implements Serializable {
 
     private final Map<Integer, RequestData> requestById;
     private int count;
@@ -54,27 +54,27 @@ public class Metrics implements Serializable {
         return requestById;
     }
 
-    public int getMaximumRequestTime() {
+    int getMaximumRequestTime() {
         return maximumRequestTime;
     }
 
-    public int getMinimumRequestTime() {
+    int getMinimumRequestTime() {
         return minimumRequestTime;
     }
 
-    public double getAverageRequestTime() {
+    double getAverageRequestTime() {
         return averageRequestTime;
     }
 
-    public long getMaximumRequestSize() {
+    long getMaximumRequestSize() {
         return maximumRequestSize;
     }
 
-    public long getMinimumRequestSize() {
+    long getMinimumRequestSize() {
         return minimumRequestSize;
     }
 
-    public double getAverageRequestSize() {
+    double getAverageRequestSize() {
         return averageRequestSize;
     }
 

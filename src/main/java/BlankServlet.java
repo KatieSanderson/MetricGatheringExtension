@@ -7,12 +7,7 @@ public class BlankServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        response.setContentType("text/html");
-        response.setCharacterEncoding("UTF-8");
-        response.setContentLength(stringBuilder.length());
-        response.getWriter().write(stringBuilder.toString());
+        response.setContentLength(0);
     }
 
     @Override
