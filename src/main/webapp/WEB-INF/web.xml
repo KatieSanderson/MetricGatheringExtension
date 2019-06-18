@@ -1,0 +1,21 @@
+<web-app>
+    <servlet>
+        <servlet-name>PicturesServlet</servlet-name>
+        <servlet-class>PicturesServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>PicturesServlet</servlet-name>
+        <url-pattern>/pictures/*</url-pattern>
+    </servlet-mapping>
+
+    <filter>
+        <filter-name>MetricFilter</filter-name>
+        <filter-class>MetricFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>MetricFilter</filter-name>
+        <servlet-name>PicturesServlet</servlet-name>
+    </filter-mapping>
+</web-app>

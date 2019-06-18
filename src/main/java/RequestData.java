@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Date;
  * requestTime: the difference between start and endRequestProcess
  */
 
-class RequestData {
+class RequestData implements Serializable {
 
     private Date startRequestProcess;
     private Date endRequestProcess;

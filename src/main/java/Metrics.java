@@ -1,5 +1,7 @@
-import java.util.HashMap;
+import java.io.Serializable;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * {@link Metrics} stores historical and performance metrics about requests and responses served by the application.
@@ -14,9 +16,9 @@ import java.util.Map;
  *     b. Historical request size by unique identifier (HTTP header)
  */
 
-public class Metrics {
+public class Metrics implements Serializable {
 
-    private final Map<Integer, RequestData> requestById;
+    private final ConcurrentMap<Integer, RequestData> requestById;
     private int count;
 
     private int maximumRequestTime;
@@ -28,7 +30,7 @@ public class Metrics {
     private double averageRequestSize;
 
     Metrics() {
-        requestById = new HashMap<>();
+        requestById = new ConcurrentHashMap<>();
         minimumRequestTime = Integer.MAX_VALUE;
         minimumRequestSize = Integer.MAX_VALUE;
     }

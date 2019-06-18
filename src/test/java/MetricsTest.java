@@ -2,7 +2,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
+import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.when;
@@ -73,7 +73,8 @@ public class MetricsTest {
 
         testMetrics(0, 0, 0, 1, 1, 1);
     }
-//
+
+    //
 //    @Test
 //    public void getRequestTimeById_Contains() {
 //        metrics.getRequestById().put(1, 2);
@@ -87,6 +88,30 @@ public class MetricsTest {
 //
 //        Assert.assertEquals(2, (int) metrics.getRequestSizeById().get(1));
 //    }
+    @Test
+    public void whenSerializingAndDeserializing_ThenObjectIsTheSame() {
+//        Person person = new Person();
+//        person.setAge(20);
+//        person.setName("Joe");
+//
+//        FileOutputStream fileOutputStream
+//                = new FileOutputStream("yourfile.txt");
+//        ObjectOutputStream objectOutputStream
+//                = new ObjectOutputStream(fileOutputStream);
+//        objectOutputStream.writeObject(person);
+//        objectOutputStream.flush();
+//        objectOutputStream.close();
+//
+//        FileInputStream fileInputStream
+//                = new FileInputStream("yourfile.txt");
+//        ObjectInputStream objectInputStream
+//                = new ObjectInputStream(fileInputStream);
+//        Person p2 = (Person) objectInputStream.readObject();
+//        objectInputStream.close();
+//
+//        assertTrue(p2.getAge() == p.getAge());
+//        assertTrue(p2.getName().equals(p.getName()));
+    }
 
     private void callMockedRequest(int firstTime, int secondTime, long firstSize, long secondSize) {
         when(requestData.getRequestTime()).thenReturn(firstTime).thenReturn(secondTime);
