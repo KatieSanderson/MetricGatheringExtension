@@ -20,13 +20,23 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>MetricsServlet</servlet-name>
-        <servlet-class>MetricsServlet</servlet-class>
+        <servlet-name>DisplayMetricsServlet</servlet-name>
+        <servlet-class>DisplayMetricsServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>MetricsServlet</servlet-name>
+        <servlet-name>DisplayMetricsServlet</servlet-name>
         <url-pattern>/metrics/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RequestMetricsServlet</servlet-name>
+        <servlet-class>RequestMetricsServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>RequestMetricsServlet</servlet-name>
+        <url-pattern>/requestMetrics/*</url-pattern>
     </servlet-mapping>
 
     <filter>
