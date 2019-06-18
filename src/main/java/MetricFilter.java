@@ -17,13 +17,13 @@ public class MetricFilter implements javax.servlet.Filter {
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 
         int ID = (new Random()).nextInt(Integer.MAX_VALUE);
-        httpServletResponse.addHeader("ID", Double.toString(ID));
+        httpServletResponse.addHeader("ID", Integer.toString(ID));
         processRequestData.setRequestId(ID);
         processRequestData.setRequestSize(Long.parseLong(httpServletResponse.getHeader("Content-Length")));
         processRequestData.setEndRequestProcess(System.currentTimeMillis());
-        System.out.println("ID: " + processRequestData.getRequestId());
-        System.out.println("Size: " + processRequestData.getRequestSize());
-        System.out.println("Time: " + processRequestData.getRequestTime());
+//        System.out.println("ID: " + processRequestData.getRequestId());
+//        System.out.println("Size: " + processRequestData.getRequestSize());
+//        System.out.println("Time: " + processRequestData.getRequestTime());
 
 
         String file = "metrics.txt";

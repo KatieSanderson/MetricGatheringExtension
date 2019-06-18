@@ -3,7 +3,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-//@WebServlet("/metricGatheringExtension/*")
 public class PicturesServlet extends HttpServlet {
 
     @Override
@@ -16,5 +15,10 @@ public class PicturesServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setContentLength(stringBuilder.length());
         response.getWriter().write(stringBuilder.toString());
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        doGet(request, response);
     }
 }

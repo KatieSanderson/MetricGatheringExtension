@@ -9,13 +9,45 @@
         <url-pattern>/pictures/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>BlankServlet</servlet-name>
+        <servlet-class>BlankServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>BlankServlet</servlet-name>
+        <url-pattern>/blank/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>MetricsServlet</servlet-name>
+        <servlet-class>MetricsServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>MetricsServlet</servlet-name>
+        <url-pattern>/metrics/*</url-pattern>
+    </servlet-mapping>
+
     <filter>
         <filter-name>MetricFilter</filter-name>
         <filter-class>MetricFilter</filter-class>
     </filter>
 
+    <!-- add additional servlets to monitor below using template:
+    <filter-mapping>
+        <filter-name>MetricFilter</filter-name>
+        <servlet-name>ServletName</servlet-name>
+    </filter-mapping>
+    -->
+
     <filter-mapping>
         <filter-name>MetricFilter</filter-name>
         <servlet-name>PicturesServlet</servlet-name>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>MetricFilter</filter-name>
+        <servlet-name>BlankServlet</servlet-name>
     </filter-mapping>
 </web-app>
