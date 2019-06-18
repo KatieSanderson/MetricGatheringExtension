@@ -3,7 +3,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.Random;
 
-public class MetricFilter implements javax.servlet.Filter {
+public class MetricsFilter implements javax.servlet.Filter {
 
     private FilterConfig filterConfig;
 

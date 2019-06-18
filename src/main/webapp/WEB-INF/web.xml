@@ -30,24 +30,24 @@
     </servlet-mapping>
 
     <filter>
-        <filter-name>MetricFilter</filter-name>
-        <filter-class>MetricFilter</filter-class>
+        <filter-name>MetricsFilter</filter-name>
+        <filter-class>MetricsFilter</filter-class>
     </filter>
 
     <!-- add additional servlets to monitor below using template:
     <filter-mapping>
-        <filter-name>MetricFilter</filter-name>
+        <filter-name>MetricsFilter</filter-name>
         <servlet-name>ServletName</servlet-name>
     </filter-mapping>
     -->
 
     <filter-mapping>
-        <filter-name>MetricFilter</filter-name>
+        <filter-name>MetricsFilter</filter-name>
         <servlet-name>PicturesServlet</servlet-name>
     </filter-mapping>
 
     <filter-mapping>
-        <filter-name>MetricFilter</filter-name>
+        <filter-name>MetricsFilter</filter-name>
         <servlet-name>BlankServlet</servlet-name>
     </filter-mapping>
 </web-app>
