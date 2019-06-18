@@ -1,19 +1,23 @@
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
- * {@link RequestData} stores the start and end {@link Date} for an in-process request. {@link RequestData #getRequestTime} calculates the request time.
+ * {@link RequestData} stores the start and end {@link Date}, response size, and unique id for a request. {@link RequestData getRequestTime} calculates the request time.
  *
- * startRequestProcess: the time when the application starts to process the request
- * endRequestProcess: the time when the application sends the response to the client
- * requestTime: the difference between start and endRequestProcess
+ * <p></p>
+ * <p>startRequestProcess: the time when the application starts to process the request</p>
+ * <p>endRequestProcess: the time when the application sends the response to the client</p>
+ * <p>requestTime: the difference between start and endRequestProcess</p>
+ * <p>responseSize: the size of the HTTP response (in bytes)</p>
+ * <p>requestId: the unique ID given to request (accessible via HTTP header "id")</p>
  */
 
 class RequestData implements Serializable {
 
     private Date startRequestProcess;
     private Date endRequestProcess;
-    private long requestSize;
+    private long responseSize;
     private int requestId;
 
     /**
@@ -47,12 +51,12 @@ class RequestData implements Serializable {
         this.endRequestProcess = new Date(endRequestProcess);
     }
 
-    long getRequestSize() {
-        return requestSize;
+    long getResponseSize() {
+        return responseSize;
     }
 
-    void setRequestSize(long requestSize) {
-        this.requestSize = requestSize;
+    void setResponseSize(long responseSize) {
+        this.responseSize = responseSize;
     }
 
     int getRequestId() {
@@ -63,4 +67,23 @@ class RequestData implements Serializable {
         this.requestId = requestId;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        RequestData that = (RequestData) o;
+        return responseSize == that.responseSize &&
+                requestId == that.requestId &&
+                Objects.equals(startRequestProcess, that.startRequestProcess) &&
+                Objects.equals(endRequestProcess, that.endRequestProcess);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(startRequestProcess, endRequestProcess, responseSize, requestId);
+    }
 }

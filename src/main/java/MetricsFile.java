@@ -1,5 +1,21 @@
 import java.io.*;
 
+/**
+ * {@link MetricsFile} is a Singleton, providing synchronized file access to stored {@link Metrics}.
+ *
+ * <p>Singleton with synchronized file access ensures multiple threads cannot modify {@link Metrics} concurrently, which is de-serialized, modified, and re-serialized with each application request.</p>
+ *
+ * <p>Other storage implementations considered:</p>
+ * <p>- Appending each request data without calculating maximum, minimum, and average or modifying {@link java.util.Map<Integer, RequestData>}</p>
+ * <p>&nbsp* Potentially good alternative if requests for /metrics/* are few compared to requests for web applications with metric-gathering extension</p>
+ * <p>&nbsp* Would reduce run time for requests for web applications with metric-gathering extension by removing de-serializing and re-serializing of {@link Metrics} data </p>
+ * <p>&nbsp* Would increase run time when requesting {@link Metrics} data (/metrics/*); requires parsing of all {@link Metrics} data</p>
+ * <p>- Calculating {@link Metrics} data at set intervals of requests</p>
+ * <p>&nbsp* Would reduce run time of most requests for web applications with metric-gathering extension by removing de-serializing and re-serializing of {@link Metrics}</p>
+ * <p>&nbsp* Would increase run time of some requests due to parsing of {@link Metrics} data</p>
+ * <p>&nbsp* Would increase run time when requesting {@link Metrics} data (/metrics/*); requires parsing of all {@link Metrics} data, but less than previous option</p>
+ */
+
 class MetricsFile {
 
     private static MetricsFile metricsFileInstance = null;
@@ -7,26 +23,24 @@ class MetricsFile {
     private Metrics metrics;
     private String file;
 
-    private MetricsFile() {
-        file = "metrics.txt";
+    private MetricsFile(String file) {
+        this.file = file;
     }
 
     static MetricsFile getInstance() {
         if (metricsFileInstance == null) {
-            metricsFileInstance = new MetricsFile();
+            metricsFileInstance = new MetricsFile("metrics.txt");
         }
         return metricsFileInstance;
     }
 
-    synchronized void openMetricsFile() {
+    synchronized void openFile() {
         FileInputStream fileInputStream;
         try {
             fileInputStream = new FileInputStream(file);
-            System.out.println("Found file");
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             try {
                 metrics = (Metrics) objectInputStream.readObject();
-                System.out.println("Found metrics");
             } catch (ClassNotFoundException e) {
                 System.out.println(e.getLocalizedMessage() + "Error reading [" + file + "]. Will create new (empty) historical metrics.");
                 metrics = new Metrics();

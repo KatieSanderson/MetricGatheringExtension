@@ -5,8 +5,10 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.when;
+import java.io.*;
+import java.util.NoSuchElementException;
 
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MetricsTest {
@@ -24,7 +26,7 @@ public class MetricsTest {
     @Test
     public void addRequestMetrics_Initial() {
         when(requestData.getRequestTime()).thenReturn(1);
-        when(requestData.getRequestSize()).thenReturn(1L);
+        when(requestData.getResponseSize()).thenReturn(1L);
 
         metrics.addRequestMetrics(requestData);
 
@@ -74,48 +76,75 @@ public class MetricsTest {
         testMetrics(0, 0, 0, 1, 1, 1);
     }
 
-    //
-//    @Test
-//    public void getRequestTimeById_Contains() {
-//        metrics.getRequestById().put(1, 2);
-//
-//        Assert.assertEquals(2, (int) metrics.getRequestById().get(1));
-//    }
-//
-//    @Test
-//    public void getRequestSizeById() {
-//        metrics.getRequestSizeById().put(1, 2);
-//
-//        Assert.assertEquals(2, (int) metrics.getRequestSizeById().get(1));
-//    }
     @Test
-    public void whenSerializingAndDeserializing_ThenObjectIsTheSame() {
-//        Person person = new Person();
-//        person.setAge(20);
-//        person.setName("Joe");
-//
-//        FileOutputStream fileOutputStream
-//                = new FileOutputStream("yourfile.txt");
-//        ObjectOutputStream objectOutputStream
-//                = new ObjectOutputStream(fileOutputStream);
-//        objectOutputStream.writeObject(person);
-//        objectOutputStream.flush();
-//        objectOutputStream.close();
-//
-//        FileInputStream fileInputStream
-//                = new FileInputStream("yourfile.txt");
-//        ObjectInputStream objectInputStream
-//                = new ObjectInputStream(fileInputStream);
-//        Person p2 = (Person) objectInputStream.readObject();
-//        objectInputStream.close();
-//
-//        assertTrue(p2.getAge() == p.getAge());
-//        assertTrue(p2.getName().equals(p.getName()));
+    public void getRequestDataById_ContainsRequest() {
+        RequestData requestData = new RequestData();
+        requestData.setRequestId(1);
+        requestData.setStartRequestProcess(0);
+        requestData.setEndRequestProcess(1);
+
+        metrics.addRequestMetrics(requestData);
+
+        Assert.assertEquals(requestData, metrics.getRequestDataById(1));
+    }
+
+    @Test (expected = NoSuchElementException.class)
+    public void getRequestDataById_NoRequest() {
+        metrics.getRequestDataById(1);
+    }
+
+    @Test
+    public void whenSerializingAndDeserializing_ThenObjectIsTheSame() throws IOException {
+        Metrics metrics = new Metrics();
+        RequestData requestData = new RequestData();
+        requestData.setStartRequestProcess(0);
+        requestData.setEndRequestProcess(1);
+        requestData.setRequestId(1);
+        requestData.setResponseSize(1L);
+
+        metrics.addRequestMetrics(requestData);
+
+        String file = "test.txt";
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+        objectOutputStream.writeObject(metrics);
+        objectOutputStream.flush();
+        objectOutputStream.close();
+
+        Metrics inputMetrics;
+        FileInputStream fileInputStream;
+        try {
+            fileInputStream = new FileInputStream(file);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            try {
+                inputMetrics = (Metrics) objectInputStream.readObject();
+            } catch (ClassNotFoundException e) {
+                System.out.println(e.getLocalizedMessage() + "Error reading [" + file + "]. Will create new (empty) historical metrics.");
+                inputMetrics = new Metrics();
+            }
+            objectInputStream.close();
+        } catch (
+                FileNotFoundException e) {
+            System.out.println( e.getLocalizedMessage() + "File: [" + file + "]. Will create new file to store metrics. ");
+            inputMetrics = new Metrics();
+        } catch (IOException e) {
+            e.printStackTrace();
+            inputMetrics = new Metrics();
+        }
+        (new File(file)).delete();
+
+        Assert.assertEquals(metrics.getMaximumRequestTime(), inputMetrics.getMaximumRequestTime());
+        Assert.assertEquals(metrics.getMinimumRequestTime(), inputMetrics.getMinimumRequestTime());
+        Assert.assertEquals(metrics.getAverageRequestTime(), inputMetrics.getAverageRequestTime(), 0.01);
+        Assert.assertEquals(metrics.getMaximumResponseSize(), inputMetrics.getMaximumResponseSize());
+        Assert.assertEquals(metrics.getMinimumResponseSize(), inputMetrics.getMaximumResponseSize());
+        Assert.assertEquals(metrics.getAverageResponseSize(), inputMetrics.getAverageResponseSize(), 0.01);
+        Assert.assertEquals(metrics.getRequestDataById(1), inputMetrics.getRequestDataById(1));
     }
 
     private void callMockedRequest(int firstTime, int secondTime, long firstSize, long secondSize) {
         when(requestData.getRequestTime()).thenReturn(firstTime).thenReturn(secondTime);
-        when(requestData.getRequestSize()).thenReturn(firstSize).thenReturn(secondSize);
+        when(requestData.getResponseSize()).thenReturn(firstSize).thenReturn(secondSize);
 
         metrics.addRequestMetrics(requestData);
         metrics.addRequestMetrics(requestData);
@@ -126,8 +155,8 @@ public class MetricsTest {
         Assert.assertEquals(expectedMaximumRequestTime, metrics.getMaximumRequestTime());
         Assert.assertEquals(expectedMinimumRequestTime, metrics.getMinimumRequestTime());
         Assert.assertEquals(expectedAverageRequestTime, metrics.getAverageRequestTime(), 0.01);
-        Assert.assertEquals(expectedMaximumRequestSize, metrics.getMaximumRequestSize());
-        Assert.assertEquals(expectedMinimumRequestSize, metrics.getMinimumRequestSize());
-        Assert.assertEquals(expectedAverageRequestSize, metrics.getAverageRequestSize(), 0.01);
+        Assert.assertEquals(expectedMaximumRequestSize, metrics.getMaximumResponseSize());
+        Assert.assertEquals(expectedMinimumRequestSize, metrics.getMinimumResponseSize());
+        Assert.assertEquals(expectedAverageRequestSize, metrics.getAverageResponseSize(), 0.01);
     }
 }

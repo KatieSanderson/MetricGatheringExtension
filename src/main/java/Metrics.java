@@ -1,9 +1,10 @@
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
- * {@link Metrics} stores historical and performance metrics about requests and responses served by the application.
+ * {@link Metrics} stores historical and performance metrics about requests and responses served by the indicated applications.
  * Times are provided in milliseconds. Sizes are provided in bytes.
  *
  * METRICS GATHERED
@@ -13,45 +14,57 @@ import java.util.Map;
  * 2. Request size (bytes) - size of the HTTP request body in bytes
  *     a. Maximum, minimum, and average request size of all requests
  *     b. Historical request size by unique identifier (HTTP header)
+ * 3. Request data (request time, response size, request id), accessible by request id
  */
 
 class Metrics implements Serializable {
 
-    private final Map<Integer, RequestData> requestById;
+    private final Map<Integer, RequestData> requestDataMap;
     private int count;
 
     private int maximumRequestTime;
     private int minimumRequestTime;
     private double averageRequestTime;
 
-    private long maximumRequestSize;
-    private long minimumRequestSize;
-    private double averageRequestSize;
+    private long maximumResponseSize;
+    private long minimumResponseSize;
+    private double averageResponseSize;
 
     Metrics() {
-        requestById = new HashMap<>();
+        requestDataMap = new HashMap<>();
         minimumRequestTime = Integer.MAX_VALUE;
-        minimumRequestSize = Integer.MAX_VALUE;
+        minimumResponseSize = Integer.MAX_VALUE;
     }
 
     void addRequestMetrics(RequestData requestData) {
-        requestById.put(requestData.getRequestId(), requestData);
+        requestDataMap.put(requestData.getRequestId(), requestData);
         int requestTime = requestData.getRequestTime();
-        long requestSize = requestData.getRequestSize();
+        long requestSize = requestData.getResponseSize();
 
         maximumRequestTime = Math.max(maximumRequestTime, requestTime);
         minimumRequestTime = Math.min(minimumRequestTime, requestTime);
         averageRequestTime = (averageRequestTime * count + requestTime) / (count + 1);
 
-        maximumRequestSize = Math.max(maximumRequestSize, requestSize);
-        minimumRequestSize = Math.min(minimumRequestSize, requestSize);
-        averageRequestSize = (averageRequestSize * count + requestSize) / (count + 1);
+        maximumResponseSize = Math.max(maximumResponseSize, requestSize);
+        minimumResponseSize = Math.min(minimumResponseSize, requestSize);
+        averageResponseSize = (averageResponseSize * count + requestSize) / (count + 1);
 
         count++;
     }
 
-    Map<Integer, RequestData> getRequestById() {
-        return requestById;
+    RequestData getRequestDataById(int id) {
+        if (!requestDataMap.containsKey(id)) {
+            throw new NoSuchElementException("No RequestData for ID: [" + id + "].");
+        }
+        return requestDataMap.get(id);
+    }
+
+    Map<Integer, RequestData> getRequestDataMap() {
+        return requestDataMap;
+    }
+
+    int getCount() {
+        return count;
     }
 
     int getMaximumRequestTime() {
@@ -66,16 +79,16 @@ class Metrics implements Serializable {
         return averageRequestTime;
     }
 
-    long getMaximumRequestSize() {
-        return maximumRequestSize;
+    long getMaximumResponseSize() {
+        return maximumResponseSize;
     }
 
-    long getMinimumRequestSize() {
-        return minimumRequestSize;
+    long getMinimumResponseSize() {
+        return minimumResponseSize;
     }
 
-    double getAverageRequestSize() {
-        return averageRequestSize;
+    double getAverageResponseSize() {
+        return averageResponseSize;
     }
 
 }

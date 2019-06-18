@@ -8,7 +8,7 @@ public class MetricsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         MetricsFile metricsFile = MetricsFile.getInstance();
-        metricsFile.openMetricsFile();
+        metricsFile.openFile();
         Metrics metrics = metricsFile.getMetrics();
 
         response.setContentType("text/html");
@@ -19,11 +19,14 @@ public class MetricsServlet extends HttpServlet {
         writer.write("<p> Minimum" + "Request Time: " + metrics.getMinimumRequestTime());
         writer.write("<p> Maximum" + "Request Time: " + metrics.getMaximumRequestTime());
         writer.write("<p> Average" + "Request Time: " + metrics.getAverageRequestTime());
-        writer.write("<p></p>");
+        writer.write("<p>");
         writer.write("<h>Response Size Metrics</h>");
-        writer.write("<p> Minimum" + "Response Size: " + metrics.getMinimumRequestSize());
-        writer.write("<p> Maximum" + "Response Size: " + metrics.getMaximumRequestSize());
-        writer.write("<p> Average" + "Response Size: " + metrics.getAverageRequestSize());
+        writer.write("<p> Minimum" + "Response Size: " + metrics.getMinimumResponseSize());
+        writer.write("<p> Maximum" + "Response Size: " + metrics.getMaximumResponseSize());
+        writer.write("<p> Average" + "Response Size: " + metrics.getAverageResponseSize());
+        writer.write("<p>");
+        writer.write("<p>");
+        writer.write("<p> Number of requests processed by metric gathering extension: " + metrics.getCount());
     }
 
     @Override

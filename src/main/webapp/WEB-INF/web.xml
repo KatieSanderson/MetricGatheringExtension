@@ -1,21 +1,21 @@
 <web-app>
     <servlet>
-        <servlet-name>PicturesServlet</servlet-name>
-        <servlet-class>PicturesServlet</servlet-class>
+        <servlet-name>testServlets.PicturesServlet</servlet-name>
+        <servlet-class>testServlets.PicturesServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>PicturesServlet</servlet-name>
+        <servlet-name>testServlets.PicturesServlet</servlet-name>
         <url-pattern>/pictures/*</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>BlankServlet</servlet-name>
-        <servlet-class>BlankServlet</servlet-class>
+        <servlet-name>testServlets.BlankServlet</servlet-name>
+        <servlet-class>testServlets.BlankServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>BlankServlet</servlet-name>
+        <servlet-name>testServlets.BlankServlet</servlet-name>
         <url-pattern>/blank/*</url-pattern>
     </servlet-mapping>
 
@@ -43,11 +43,11 @@
 
     <filter-mapping>
         <filter-name>MetricsFilter</filter-name>
-        <servlet-name>PicturesServlet</servlet-name>
+        <servlet-name>testServlets.PicturesServlet</servlet-name>
     </filter-mapping>
 
     <filter-mapping>
         <filter-name>MetricsFilter</filter-name>
-        <servlet-name>BlankServlet</servlet-name>
+        <servlet-name>testServlets.BlankServlet</servlet-name>
     </filter-mapping>
 </web-app>
