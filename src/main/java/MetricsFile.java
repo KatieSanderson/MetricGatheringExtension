@@ -1,7 +1,7 @@
 import java.io.*;
 
 /**
- * {@link MetricsFile} is a Singleton, providing synchronized file access to stored {@link Metrics}.
+ * <p>{@link MetricsFile} is a Singleton, providing synchronized file access to stored {@link Metrics}.</p>
  *
  * <p>Singleton with synchronized file access ensures multiple threads cannot modify {@link Metrics} concurrently, which is de-serialized, modified, and re-serialized with each application request.</p>
  *
@@ -48,7 +48,7 @@ class MetricsFile {
             objectInputStream.close();
         } catch (
                 FileNotFoundException e) {
-            System.out.println( e.getLocalizedMessage() + "File: [" + file + "]. Will create new file to store metrics. ");
+            System.out.println( e.getLocalizedMessage() + "File: [" + file + "]. Will create new file to store metrics.");
             metrics = new Metrics();
         } catch (IOException e) {
             e.printStackTrace();

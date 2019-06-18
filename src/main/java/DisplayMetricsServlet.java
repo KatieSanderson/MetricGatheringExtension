@@ -3,6 +3,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
+/**
+ *  <p>{@link DisplayMetricsServlet} displays historical metrics gathered by {@link MetricsFilter} on a web page.</p>
+ *
+ *  <p>METRICS DISPLAYED</p>
+ *  <p>1. Request time (milliseconds) - time spent between when the application starts to process the request and the time when the application sends the response to the client </p>
+ *  <p>    a. Maximum, minimum, and average request time of all requests</p>
+ *  <p>2. Response size (bytes) - size of the HTTP response body in bytes</p>
+ *  <p>    a. Maximum, minimum, and average request size of all requests</p>
+ *  <p>3. Number of requests processed by metric gathering extension</p>
+ */
+
 public class DisplayMetricsServlet extends HttpServlet {
 
     @Override
@@ -26,7 +37,7 @@ public class DisplayMetricsServlet extends HttpServlet {
         writer.write("<p> Average" + "Response Size: " + metrics.getAverageResponseSize());
         writer.write("<p>");
         writer.write("<p>");
-        writer.write("<p> Number of requests processed by metric gathering extension: " + metrics.getCount());
+        writer.write("<p> Number of requests processed by metric gathering extension: " + metrics.getRequestCount());
     }
 
     @Override

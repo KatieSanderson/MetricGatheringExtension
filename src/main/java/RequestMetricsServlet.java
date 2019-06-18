@@ -5,6 +5,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.NoSuchElementException;
 
+/**
+ *  <p>{@link RequestMetricsServlet} displays metrics for a request specified by the web page's form</p>
+ *
+ *  <p>METRICS DISPLAYED</p>
+ *  <p>1. Request time (milliseconds) - time spent between when the application starts to process the request and the time when the application sends the response to the client </p>
+ *  <p>2. Response size (bytes) - size of the HTTP response body in bytes</p>
+ */
+
 public class RequestMetricsServlet extends HttpServlet {
 
     @Override

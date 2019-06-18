@@ -9,18 +9,18 @@ It allows users to look up a specific request's request time and response size b
 METRICS GATHERED
 1. Request time (milliseconds) - time spent between when the application starts to process the request and the time when the application sends the response to the client
     a. Maximum, minimum, and average request time of all requests
-    b. Historical request time by unique identifier (HTTP header)
+    b. Historical request time by unique identifier
 2. Response size (bytes) - size of the HTTP request body in bytes
     a. Maximum, minimum, and average request size of all requests
-    b. Historical request size by unique identifier (HTTP header)
+    b. Historical request size by unique identifier
 3. Request IDs - randomly assigned and verified unique by metric gathering extension
-    a. A user can obtain the request ID via HTTP header "ID"
+    a. A user can obtain the request ID
 
 DEPLOY INSTRUCTIONS
 Directions using this zip after extraction (all in terminal, in the folder with src, test, etc.):
 1.	Command: mvn jetty:run
     a. This will build the project and start a Jetty server
-a.	In a browser, options:
+2.	In a browser, options:
     a. Request web pages with metric gathering extension (via servlet URL mapping)
     b. View historical metrics (via /metrics/*)
     c. View a specific request's request time and response size by unique identifier (via /requestMetrics/*)
@@ -51,13 +51,13 @@ ADDING METRIC GATHERING EXTENSION TO NEW WEB APPLICATION
         f. DisplayMetricsServlet.java (\MetricGatheringExtension\src\main\java\DisplayMetricsServlet.java)
         g. web.xml (\MetricGatheringExtension\src\main\webapp\WEB-INF\web.xml)
             i. Servlet, Servlet Mappings, and Filter Mappings will need modified for new web application's servlets
-    Ensure desired servlet is configured properly in the web application
-    2. Add servlet to MetricFilter's filter mapping in the web.xml
+        i. pom.xml (\MetricGatheringExtension\pom.xml)
+    2. Ensure desired servlet is configured properly in the web application
+    3. Add servlet to MetricFilter's filter mapping in the web.xml
        a. Syntax for adding filter mapping, where "ServletName" is the associated web.xml servlet name
            <filter-mapping>
                <filter-name>MetricsFilter</filter-name>
                <servlet-name>"ServletName"</servlet-name>
            </filter-mapping>
        b. No additional compilation is required if modifying the web.xml for filter mapping
-    3. If desired, reset metrics data by deleting "metrics.txt" (\MetricGatheringExtension\metrics.txt)
     4. Run normally
