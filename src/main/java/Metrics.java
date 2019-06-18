@@ -14,7 +14,6 @@ import java.util.NoSuchElementException;
  * 2. Request size (bytes) - size of the HTTP request body in bytes
  *     a. Maximum, minimum, and average request size of all requests
  *     b. Historical request size by unique identifier (HTTP header)
- * 3. Request data (request time, response size, request id), accessible by request id
  */
 
 class Metrics implements Serializable {

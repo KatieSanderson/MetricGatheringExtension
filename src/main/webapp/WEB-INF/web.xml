@@ -1,4 +1,6 @@
 <web-app>
+    <!-- Add additional servlets and servlet mappings here -->
+
     <servlet>
         <servlet-name>testServlets.PicturesServlet</servlet-name>
         <servlet-class>testServlets.PicturesServlet</servlet-class>
