@@ -10,7 +10,7 @@ METRICS GATHERED
 1. Request time (milliseconds) - time spent between when the application starts to process the request and the time when the application sends the response to the client
     a. Maximum, minimum, and average request time of all requests
     b. Historical request time by unique identifier
-2. Response size (bytes) - size of the HTTP request body in bytes
+2. Response size (bytes) - size of the HTTP response body in bytes
     a. Maximum, minimum, and average request size of all requests
     b. Historical request size by unique identifier
 3. Request IDs - randomly assigned and verified unique by metric gathering extension
