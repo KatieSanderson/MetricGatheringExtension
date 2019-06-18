@@ -7,26 +7,9 @@ public class MetricsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String file = "metrics.txt";
-        FileInputStream fileInputStream;
-        Metrics metrics;
-        try {
-            fileInputStream = new FileInputStream(file);
-            System.out.println("Found file");
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            try {
-                metrics = (Metrics) objectInputStream.readObject();
-                System.out.println("Found metrics");
-            } catch (ClassNotFoundException e) {
-                System.out.println(e.getLocalizedMessage() + "Error reading [" + file + "]. Will create new (empty) historical metrics.");
-                metrics = new Metrics();
-            }
-            objectInputStream.close();
-        } catch (FileNotFoundException e) {
-            System.out.println( e.getLocalizedMessage() + "File: [" + file + "]. Will create new file to store metrics. ");
-            metrics = new Metrics();
-
-        }
+        MetricsFile metricsFile = MetricsFile.getInstance();
+        metricsFile.openMetricsFile();
+        Metrics metrics = metricsFile.getMetrics();
 
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");

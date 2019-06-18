@@ -14,43 +14,24 @@ public class MetricFilter implements javax.servlet.Filter {
 
         filterChain.doFilter(servletRequest, servletResponse);
 
-        HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
+        MetricsFile metricsFile = MetricsFile.getInstance();
+        metricsFile.openMetricsFile();
+        Metrics metrics = metricsFile.getMetrics();
 
-        int ID = (new Random()).nextInt(Integer.MAX_VALUE);
+        HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
+        Random random = new Random();
+        int ID = random.nextInt(Integer.MAX_VALUE);
+        while (metrics.getRequestById().containsKey(ID)) {
+            ID = random.nextInt(Integer.MAX_VALUE);
+        }
         httpServletResponse.addHeader("ID", Integer.toString(ID));
         processRequestData.setRequestId(ID);
         processRequestData.setRequestSize(Long.parseLong(httpServletResponse.getHeader("Content-Length")));
         processRequestData.setEndRequestProcess(System.currentTimeMillis());
-//        System.out.println("ID: " + processRequestData.getRequestId());
-//        System.out.println("Size: " + processRequestData.getRequestSize());
-//        System.out.println("Time: " + processRequestData.getRequestTime());
-
-
-        String file = "metrics.txt";
-        FileInputStream fileInputStream = null;
-        Metrics metrics = new Metrics();
-        try {
-            fileInputStream = new FileInputStream(file);
-            System.out.println("Found file");
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            try {
-                metrics = (Metrics) objectInputStream.readObject();
-                System.out.println("Found metrics");
-            } catch (ClassNotFoundException e) {
-                System.out.println(e.getLocalizedMessage() + "Error reading [" + file + "].");
-            }
-            objectInputStream.close();
-        } catch (FileNotFoundException e) {
-            System.out.println( e.getLocalizedMessage() + "File: [" + file + "]. Will create new file to store metrics. ");
-        }
 
         metrics.addRequestMetrics(processRequestData);
 
-        FileOutputStream fileOutputStream = new FileOutputStream(file);
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-        objectOutputStream.writeObject(metrics);
-        objectOutputStream.flush();
-        objectOutputStream.close();
+        metricsFile.writeMetricsToFile();
     }
 
     @Override
