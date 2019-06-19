@@ -1,6 +1,7 @@
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Random;
 
 /**
  * {@link RequestData} stores the start and end {@link Date}, response size, and unique id for a request. {@link RequestData getRequestTime} calculates the request time.
@@ -11,6 +12,8 @@ import java.util.Objects;
  * <p>requestTime: the difference between start and endRequestProcess</p>
  * <p>responseSize: the size of the HTTP response (in bytes)</p>
  * <p>requestId: the unique ID given to request (accessible via HTTP header "id")</p>
+ * <p>&nbsp- ID is a randomly selected number between 0 and {@link Integer}'s maximum value (2^31 - 1). </p>
+ * <p>&nbsp- This is considered unique due to very low possibility of collisions, and allows for all read and write access to easily be completed quickly and synchronisely </p>
  */
 
 class RequestData implements Serializable {
@@ -63,8 +66,8 @@ class RequestData implements Serializable {
         return requestId;
     }
 
-    void setRequestId(int requestId) {
-        this.requestId = requestId;
+    void setRequestId() {
+        this.requestId = new Random().nextInt(Integer.MAX_VALUE);
     }
 
     @Override

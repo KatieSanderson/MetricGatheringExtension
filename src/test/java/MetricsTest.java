@@ -76,18 +76,6 @@ public class MetricsTest {
         testMetrics(0, 0, 0, 1, 1, 1);
     }
 
-    @Test
-    public void getRequestDataById_ContainsRequest() {
-        RequestData requestData = new RequestData();
-        requestData.setRequestId(1);
-        requestData.setStartRequestProcess(0);
-        requestData.setEndRequestProcess(1);
-
-        metrics.addRequestMetrics(requestData);
-
-        Assert.assertEquals(requestData, metrics.getRequestDataById(1));
-    }
-
     @Test (expected = NoSuchElementException.class)
     public void getRequestDataById_NoRequest() {
         metrics.getRequestDataById(1);
@@ -99,7 +87,6 @@ public class MetricsTest {
         RequestData requestData = new RequestData();
         requestData.setStartRequestProcess(0);
         requestData.setEndRequestProcess(1);
-        requestData.setRequestId(1);
         requestData.setResponseSize(1L);
 
         metrics.addRequestMetrics(requestData);
@@ -141,7 +128,6 @@ public class MetricsTest {
         Assert.assertEquals(metrics.getMaximumResponseSize(), inputMetrics.getMaximumResponseSize());
         Assert.assertEquals(metrics.getMinimumResponseSize(), inputMetrics.getMaximumResponseSize());
         Assert.assertEquals(metrics.getAverageResponseSize(), inputMetrics.getAverageResponseSize(), 0.01);
-        Assert.assertEquals(metrics.getRequestDataById(1), inputMetrics.getRequestDataById(1));
     }
 
     private void callMockedRequest(int firstTime, int secondTime, long firstSize, long secondSize) {

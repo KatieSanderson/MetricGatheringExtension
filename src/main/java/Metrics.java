@@ -58,10 +58,6 @@ class Metrics implements Serializable {
         return requestDataMap.get(id);
     }
 
-    Map<Integer, RequestData> getRequestDataMap() {
-        return requestDataMap;
-    }
-
     int getRequestCount() {
         return requestCount;
     }

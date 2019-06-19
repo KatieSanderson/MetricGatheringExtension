@@ -18,8 +18,7 @@ public class DisplayMetricsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        MetricsFile metricsFile = MetricsFile.getInstance();
-        Metrics metrics = metricsFile.readFile();
+        Metrics metrics = MetricsFile.readFile();
 
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");

@@ -1,7 +1,6 @@
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Random;
 
 /**
  * {@link MetricsFilter} is a filter for servlets specified in the web.xml filter mapping. It extends the web application by gathering metrics before and after the web application's service() call.
@@ -16,8 +15,8 @@ public class MetricsFilter implements javax.servlet.Filter {
         // pre-processing
         RequestData processRequestData = new RequestData();
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
-        int ID = (new Random()).nextInt(Integer.MAX_VALUE);
-        httpServletResponse.addHeader("ID", Integer.toString(ID));
+        processRequestData.setRequestId();
+        httpServletResponse.addHeader("ID", Integer.valueOf(processRequestData.getRequestId()).toString());
         processRequestData.setStartRequestProcess(System.currentTimeMillis());
 
         // call actual web application
@@ -25,7 +24,6 @@ public class MetricsFilter implements javax.servlet.Filter {
 
         // post-processing
         processRequestData.setEndRequestProcess(System.currentTimeMillis());
-        processRequestData.setRequestId(ID);
         processRequestData.setResponseSize(Long.parseLong(httpServletResponse.getHeader("Content-Length")));
 
         // post-processing to update stored metrics

@@ -35,7 +35,6 @@ class MetricsFile {
     }
 
     static Metrics readFile() {
-        MetricsFile metricsFile = getInstance();
         try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file))){
             return (Metrics) objectInputStream.readObject();
         } catch (ClassNotFoundException e) {

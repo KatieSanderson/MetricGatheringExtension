@@ -54,7 +54,6 @@ public class RequestDataTest {
         RequestData requestData = new RequestData();
         requestData.setStartRequestProcess(0);
         requestData.setEndRequestProcess(1);
-        requestData.setRequestId(1);
         requestData.setResponseSize(1L);
 
         String file = "test.txt";
