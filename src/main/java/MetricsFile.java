@@ -6,7 +6,7 @@ import java.io.*;
  * <p>Singleton with synchronized file access ensures multiple threads cannot modify {@link Metrics} concurrently, which is de-serialized, modified, and re-serialized with each application request.</p>
  *
  * <p>Other storage implementations considered:</p>
- * <p>- Appending each request data without calculating maximum, minimum, and average or modifying {@link java.util.Map<Integer, RequestData>}</p>
+ * <p>- Appending each request data without calculating maximum, minimum, and average or modifying {@link java.util.Map}</p>
  * <p>&nbsp* Potentially good alternative if requests for /metrics/* are few compared to requests for web applications with metric-gathering extension</p>
  * <p>&nbsp* Would reduce run time for requests for web applications with metric-gathering extension by removing de-serializing and re-serializing of {@link Metrics} data </p>
  * <p>&nbsp* Would increase run time when requesting {@link Metrics} data (/metrics/*); requires parsing of all {@link Metrics} data</p>
@@ -34,18 +34,12 @@ class MetricsFile {
         return metricsFileInstance;
     }
 
-    synchronized void openFile() {
-        FileInputStream fileInputStream;
-        try {
-            fileInputStream = new FileInputStream(file);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            try {
-                metrics = (Metrics) objectInputStream.readObject();
-            } catch (ClassNotFoundException e) {
-                System.out.println(e.getLocalizedMessage() + "Error reading [" + file + "]. Will create new (empty) historical metrics.");
-                metrics = new Metrics();
-            }
-            objectInputStream.close();
+    void readFile() {
+        try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file))){
+            metrics = (Metrics) objectInputStream.readObject();
+        } catch (ClassNotFoundException e) {
+            System.out.println(e.getLocalizedMessage() + "Error reading [" + file + "]. Will create new (empty) historical metrics.");
+            metrics = new Metrics();
         } catch (
                 FileNotFoundException e) {
             System.out.println( e.getLocalizedMessage() + "File: [" + file + "]. Will create new file to store metrics.");
@@ -56,16 +50,20 @@ class MetricsFile {
         }
     }
 
-    void writeMetricsToFile() throws IOException {
-        FileOutputStream fileOutputStream = new FileOutputStream(file);
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-        objectOutputStream.writeObject(metrics);
-        objectOutputStream.flush();
-        objectOutputStream.close();
+    private void writeToFile() throws IOException {
+        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file))) {
+            objectOutputStream.writeObject(metrics);
+            objectOutputStream.flush();
+        }
     }
 
-    Metrics getMetrics() {
+    synchronized void updateFile(RequestData requestData) throws IOException {
+        readFile();
+        metrics.addRequestMetrics(requestData);
+        writeToFile();
+    }
+
+    public Metrics getMetrics() {
         return metrics;
     }
-
 }
