@@ -59,5 +59,4 @@ ADDING METRIC GATHERING EXTENSION TO NEW WEB APPLICATION
                <filter-name>MetricsFilter</filter-name>
                <servlet-name>"ServletName"</servlet-name>
            </filter-mapping>
-       b. No additional compilation is required if modifying the web.xml for filter mapping
     4. Run normally
