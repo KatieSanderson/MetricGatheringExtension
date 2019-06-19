@@ -13,8 +13,8 @@ METRICS GATHERED
 2. Response size (bytes) - size of the HTTP response body in bytes
     a. Maximum, minimum, and average request size of all requests
     b. Historical request size by unique identifier
-3. Request IDs - randomly assigned and verified unique by metric gathering extension
-    a. A user can obtain the request ID
+3. Request IDs - randomly assigned unique by metric gathering extension
+    a. A user can obtain the request ID through HTTP header "ID"
 
 DEPLOY INSTRUCTIONS
 Directions using this zip after extraction (all in terminal, project folder):
