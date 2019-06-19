@@ -14,6 +14,10 @@ import java.io.*;
  * <p>&nbsp* Would reduce run time of most requests for web applications with metric-gathering extension by removing de-serializing and re-serializing of {@link Metrics}</p>
  * <p>&nbsp* Would increase run time of some requests due to parsing of {@link Metrics} data</p>
  * <p>&nbsp* Would increase run time when requesting {@link Metrics} data (/metrics/*); requires parsing of all {@link Metrics} data, but less than previous option</p>
+ * <p>- Storing {@link Metrics} data separate from {@link RequestData}, calculating stored {@link RequestData} data at set intervals to add to {@link Metrics} data</p>
+ * <p>&nbsp* Would reduce run time of all requests for web applications with metric-gathering extension by removing de-serializing and re-serializing of {@link Metrics}</p>
+ * <p>&nbsp* Would move calculations from live requests to server</p>
+ * <p>&nbsp* Would reduce run time when requesting {@link Metrics} data (/metrics/*)</p>
  */
 
 class MetricsFile {
@@ -40,8 +44,7 @@ class MetricsFile {
         } catch (ClassNotFoundException e) {
             System.out.println(e.getLocalizedMessage() + "Error reading [" + file + "]. Will create new (empty) historical metrics.");
             metrics = new Metrics();
-        } catch (
-                FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.out.println( e.getLocalizedMessage() + "File: [" + file + "]. Will create new file to store metrics.");
             metrics = new Metrics();
         } catch (IOException e) {
@@ -63,7 +66,7 @@ class MetricsFile {
         writeToFile();
     }
 
-    public Metrics getMetrics() {
+    Metrics getMetrics() {
         return metrics;
     }
 }
