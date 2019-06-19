@@ -6,6 +6,8 @@ It gathers and displays maximum, minimum, average of Request Time and Response S
 
 It allows users to look up a specific request's request time and response size by a unique identifier. Requests can be viewed via (/requestMetrics/*) URL and inputting a valid request ID.
 
+[![Build Status](https://travis-ci.com/KatieSanderson/MetricGatheringExtension.svg?branch=master)](https://travis-ci.com/KatieSanderson/MetricGatheringExtension)
+
 METRICS GATHERED
 1. Request time (milliseconds) - time spent between when the application starts to process the request and the time when the application sends the response to the client
     a. Maximum, minimum, and average request time of all requests
