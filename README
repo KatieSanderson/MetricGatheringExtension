@@ -17,7 +17,7 @@ METRICS GATHERED
     a. A user can obtain the request ID
 
 DEPLOY INSTRUCTIONS
-Directions using this zip after extraction (all in terminal, in the folder with src, test, etc.):
+Directions using this zip after extraction (all in terminal, project folder):
 1.	Command: mvn jetty:run
     a. This will build the project and start a Jetty server
 2.	In a browser, options:
