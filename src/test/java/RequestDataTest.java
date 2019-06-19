@@ -58,6 +58,8 @@ public class RequestDataTest {
         requestData.setResponseSize(1L);
 
         String file = "test.txt";
+        new File(file).delete();
+
         FileOutputStream fileOutputStream = new FileOutputStream(file);
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
         objectOutputStream.writeObject(requestData);
@@ -83,7 +85,7 @@ public class RequestDataTest {
             e.printStackTrace();
             inputRequestData = new RequestData();
         }
-        (new File(file)).delete();
+        new File(file).delete();
 
         Assert.assertEquals(requestData.getRequestTime(), inputRequestData.getRequestTime());
         Assert.assertEquals(requestData.getResponseSize(), inputRequestData.getResponseSize());
