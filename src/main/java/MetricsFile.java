@@ -23,37 +23,34 @@ import java.io.*;
 class MetricsFile {
 
     private static MetricsFile metricsFileInstance = null;
+    private static String file = "metrics.txt";
 
-    private Metrics metrics;
-    private String file;
-
-    private MetricsFile(String file) {
-        this.file = file;
-    }
+    private MetricsFile() {}
 
     static MetricsFile getInstance() {
         if (metricsFileInstance == null) {
-            metricsFileInstance = new MetricsFile("metrics.txt");
+            metricsFileInstance = new MetricsFile();
         }
         return metricsFileInstance;
     }
 
-    void readFile() {
+    static Metrics readFile() {
+        MetricsFile metricsFile = getInstance();
         try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file))){
-            metrics = (Metrics) objectInputStream.readObject();
+            return (Metrics) objectInputStream.readObject();
         } catch (ClassNotFoundException e) {
             System.out.println(e.getLocalizedMessage() + "Error reading [" + file + "]. Will create new (empty) historical metrics.");
-            metrics = new Metrics();
+            return new Metrics();
         } catch (FileNotFoundException e) {
             System.out.println( e.getLocalizedMessage() + "File: [" + file + "]. Will create new file to store metrics.");
-            metrics = new Metrics();
+            return new Metrics();
         } catch (IOException e) {
             e.printStackTrace();
-            metrics = new Metrics();
+            return new Metrics();
         }
     }
 
-    private void writeToFile() throws IOException {
+    private void writeToFile(Metrics metrics) throws IOException {
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file))) {
             objectOutputStream.writeObject(metrics);
             objectOutputStream.flush();
@@ -61,12 +58,9 @@ class MetricsFile {
     }
 
     synchronized void updateFile(RequestData requestData) throws IOException {
-        readFile();
+        Metrics metrics = readFile();
         metrics.addRequestMetrics(requestData);
-        writeToFile();
+        writeToFile(metrics);
     }
 
-    Metrics getMetrics() {
-        return metrics;
-    }
 }

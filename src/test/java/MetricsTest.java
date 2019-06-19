@@ -105,6 +105,8 @@ public class MetricsTest {
         metrics.addRequestMetrics(requestData);
 
         String file = "test.txt";
+        new File(file).delete();
+
         FileOutputStream fileOutputStream = new FileOutputStream(file);
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
         objectOutputStream.writeObject(metrics);
@@ -131,7 +133,7 @@ public class MetricsTest {
             e.printStackTrace();
             inputMetrics = new Metrics();
         }
-        (new File(file)).delete();
+        new File(file).delete();
 
         Assert.assertEquals(metrics.getMaximumRequestTime(), inputMetrics.getMaximumRequestTime());
         Assert.assertEquals(metrics.getMinimumRequestTime(), inputMetrics.getMinimumRequestTime());
