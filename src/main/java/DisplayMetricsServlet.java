@@ -29,6 +29,7 @@ public class DisplayMetricsServlet extends HttpServlet {
         writer.write("<p> Maximum" + "Request Time: " + metrics.getMaximumRequestTime());
         writer.write("<p> Average" + "Request Time: " + metrics.getAverageRequestTime());
         writer.write("<p>");
+        writer.write("<p>");
         writer.write("<h>Response Size Metrics</h>");
         writer.write("<p> Minimum" + "Response Size: " + metrics.getMinimumResponseSize());
         writer.write("<p> Maximum" + "Response Size: " + metrics.getMaximumResponseSize());
