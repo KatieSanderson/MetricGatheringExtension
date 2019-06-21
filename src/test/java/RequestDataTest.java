@@ -59,29 +59,24 @@ public class RequestDataTest {
         String file = "test.txt";
         new File(file).delete();
 
-        FileOutputStream fileOutputStream = new FileOutputStream(file);
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-        objectOutputStream.writeObject(requestData);
-        objectOutputStream.flush();
-        objectOutputStream.close();
+        // write to file
+        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file))) {
+            objectOutputStream.writeObject(requestData);
+            objectOutputStream.flush();
+        }
 
+        // read from file
         RequestData inputRequestData;
-        FileInputStream fileInputStream;
-        try {
-            fileInputStream = new FileInputStream(file);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            try {
-                inputRequestData = (RequestData) objectInputStream.readObject();
-            } catch (ClassNotFoundException e) {
-                System.out.println(e.getLocalizedMessage() + "Error reading [" + file + "]. Will create new (empty) historical metrics.");
-                inputRequestData = new RequestData();
-            }
-            objectInputStream.close();
+        try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file))){
+            inputRequestData = (RequestData) objectInputStream.readObject();
         } catch (FileNotFoundException e) {
             System.out.println( e.getLocalizedMessage() + "File: [" + file + "]. Will create new file to store metrics. ");
             inputRequestData = new RequestData();
         } catch (IOException e) {
             e.printStackTrace();
+            inputRequestData = new RequestData();
+        } catch (ClassNotFoundException e) {
+            System.out.println(e.getLocalizedMessage() + "Error reading [" + file + "]. Will create new (empty) historical metrics.");
             inputRequestData = new RequestData();
         }
         new File(file).delete();

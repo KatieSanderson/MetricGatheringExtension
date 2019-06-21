@@ -94,30 +94,25 @@ public class MetricsTest {
         String file = "test.txt";
         new File(file).delete();
 
-        FileOutputStream fileOutputStream = new FileOutputStream(file);
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-        objectOutputStream.writeObject(metrics);
-        objectOutputStream.flush();
-        objectOutputStream.close();
+        // write to file
+        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file))) {
+            objectOutputStream.writeObject(metrics);
+            objectOutputStream.flush();
+        }
 
+        // read from file
         Metrics inputMetrics;
-        FileInputStream fileInputStream;
-        try {
-            fileInputStream = new FileInputStream(file);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            try {
-                inputMetrics = (Metrics) objectInputStream.readObject();
-            } catch (ClassNotFoundException e) {
-                System.out.println(e.getLocalizedMessage() + "Error reading [" + file + "]. Will create new (empty) historical metrics.");
-                inputMetrics = new Metrics();
-            }
-            objectInputStream.close();
+        try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file))){
+            inputMetrics = (Metrics) objectInputStream.readObject();
         } catch (
                 FileNotFoundException e) {
             System.out.println( e.getLocalizedMessage() + "File: [" + file + "]. Will create new file to store metrics. ");
             inputMetrics = new Metrics();
         } catch (IOException e) {
             e.printStackTrace();
+            inputMetrics = new Metrics();
+        } catch (ClassNotFoundException e) {
+            System.out.println(e.getLocalizedMessage() + "Error reading [" + file + "]. Will create new (empty) historical metrics.");
             inputMetrics = new Metrics();
         }
         new File(file).delete();

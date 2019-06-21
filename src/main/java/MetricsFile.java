@@ -34,7 +34,12 @@ class MetricsFile {
         return metricsFileInstance;
     }
 
-    static Metrics readFile() {
+    /**
+     * Reads from file (does not write). Synchronized to ensure {@link MetricsFile updateFile} does not update the file whilst method is still reading.
+     *
+     * @return Metrics
+     */
+    synchronized static Metrics readFile() {
         try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file))){
             return (Metrics) objectInputStream.readObject();
         } catch (ClassNotFoundException e) {
@@ -55,6 +60,10 @@ class MetricsFile {
             objectOutputStream.flush();
         }
     }
+
+    /**
+     * Updates file (reads, updates metrics, and writes). Synchronized to prevent multiple concurrent update and writes.
+     */
 
     synchronized void updateFile(RequestData requestData) throws IOException {
         Metrics metrics = readFile();

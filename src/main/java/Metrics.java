@@ -40,6 +40,7 @@ class Metrics implements Serializable {
         int requestTime = requestData.getRequestTime();
         long requestSize = requestData.getResponseSize();
 
+        // calculate new global metrics
         maximumRequestTime = Math.max(maximumRequestTime, requestTime);
         minimumRequestTime = Math.min(minimumRequestTime, requestTime);
         averageRequestTime = (averageRequestTime * requestCount + requestTime) / (requestCount + 1);

@@ -30,6 +30,7 @@ public class RequestMetricsServlet extends HttpServlet {
         writer.write("<input type=\"submit\" value=\"Submit\">");
         writer.write("</form>");
 
+        // if user has provided input, check input and, if valid, provide requestData metrics
         if (request.getParameter("id") != null) {
             Integer requestId = null;
             try {
